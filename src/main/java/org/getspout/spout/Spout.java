@@ -16,12 +16,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.getspout.commons.inventory.ItemMap;
 import org.getspout.commons.io.CRCStore;
 import org.getspout.commons.io.store.FlatFileStore;
-import org.getspout.spout.block.SpoutCraftChunk;
-import org.getspout.spout.block.mcblock.CustomBlock;
 import org.getspout.spout.chunkcache.SimpleCacheManager;
 import org.getspout.spout.command.SpoutCommand;
 import org.getspout.spout.config.ConfigReader;
-import org.getspout.spout.inventory.SimpleMaterialManager;
 import org.getspout.spout.inventory.SpoutInventoryBuilder;
 import org.getspout.spout.item.mcitem.CustomItemFlint;
 import org.getspout.spout.item.mcitem.CustomItemPickaxe;
@@ -45,7 +42,6 @@ public class Spout extends JavaPlugin {
     protected final PlayerTrackingManager playerTrackingManager;
     protected SpoutWorldListener chunkListener;
     protected SpoutWorldMonitorListener chunkMonitorListener;
-    protected SpoutBlockListener blockListener;
     protected SpoutEntityListener entityListener;
     protected PluginListener pluginListener;
     protected SpoutCustomBlockMonitor blockMonitor;
@@ -72,7 +68,6 @@ public class Spout extends JavaPlugin {
         SpoutManager.getInstance().setBiomeManager(new SimpleBiomeManager());
         SpoutManager.getInstance().setFileManager(new SimpleFileManager());
         SpoutManager.getInstance().setKeyBindingManager(new SimpleKeyBindingManager());
-        SpoutManager.getInstance().setMaterialManager(new SimpleMaterialManager());
         SpoutManager.getInstance().setWorldManager(new SimpleWorldManager());
         playerTrackingManager = new PlayerTrackingManager();
         shutdownThread = new ShutdownThread();
@@ -86,8 +81,6 @@ public class Spout extends JavaPlugin {
             return;
         }
         //order matters
-        CustomBlock.resetBlocks();
-        ((SimpleMaterialManager) SpoutManager.getMaterialManager()).reset();
         ((SimpleSkyManager) SpoutManager.getSkyManager()).reset();
         ((SimplePlayerManager) SpoutManager.getPlayerManager()).onPluginDisable();
         Player[] online = getServer().getOnlinePlayers();
@@ -106,7 +99,6 @@ public class Spout extends JavaPlugin {
         //	SpoutCraftPlayer.removeBukkitEntity(player);
         //	SpoutCraftPlayer.resetNetServerHandler(player);
         //}
-        SpoutCraftChunk.resetAllBukkitChunks();
 
         getServer().getScheduler().cancelTasks(this);
 
@@ -176,7 +168,6 @@ public class Spout extends JavaPlugin {
             pluginListener = new PluginListener(this);
             entityListener = new SpoutEntityListener(this);
             blockMonitor = new SpoutCustomBlockMonitor(this);
-            blockListener = new SpoutBlockListener(this);
 
             for (SpoutPlayer player : org.getspout.spoutapi.Spout.getServer().getOnlinePlayers()) {
                 SpoutCraftPlayer.resetNetServerHandler(player);
@@ -191,13 +182,11 @@ public class Spout extends JavaPlugin {
                 }
             }
 
-            SpoutCraftChunk.replaceAllBukkitChunks();
             ((SimplePlayerManager) SpoutManager.getPlayerManager()).onPluginEnable();
 
             CustomItemSpade.replaceSpades();
             CustomItemPickaxe.replacePickaxes();
             CustomItemFlint.replaceFlint();
-            CustomBlock.replaceBlocks();
 
             PacketCompressionThread.startThread();
 
@@ -212,7 +201,6 @@ public class Spout extends JavaPlugin {
             SimpleChunkDataManager dm = (SimpleChunkDataManager) SpoutManager.getChunkDataManager();
             dm.loadAllChunks();
 
-            SimpleMaterialManager.disableFlintStackMix();
         }
         //These are safe even if the build check fails
         getCommand("spout").setExecutor(new SpoutCommand(this));

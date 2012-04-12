@@ -4,7 +4,6 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.getspout.spout.config.ConfigReader;
-import org.getspout.spout.inventory.SimpleMaterialManager;
 import org.getspout.spout.keyboard.SimpleKeyBindingManager;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.player.SimpleBiomeManager;
@@ -55,7 +54,6 @@ public class PlayerManager {
         player.sendPacket(new PacketServerPlugins(Bukkit.getServer().getPluginManager().getPlugins()));
 
         ((SpoutCraftPlayer) player).updateAppearance();
-        ((SimpleMaterialManager) SpoutManager.getMaterialManager()).onPlayerJoin(player);
         ((SimpleSkyManager) SpoutManager.getSkyManager()).onPlayerJoin(player);
         ((SimpleBiomeManager) SpoutManager.getBiomeManager()).onPlayerJoin(player);
         ((SimpleFileManager) SpoutManager.getFileManager()).onPlayerJoin(player);
