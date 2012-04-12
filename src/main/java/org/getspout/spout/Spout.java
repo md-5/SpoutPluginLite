@@ -18,9 +18,7 @@ import org.getspout.commons.io.CRCStore;
 import org.getspout.commons.io.store.FlatFileStore;
 import org.getspout.spout.command.SpoutCommand;
 import org.getspout.spout.config.ConfigReader;
-import org.getspout.spout.inventory.SpoutInventoryBuilder;
 import org.getspout.spout.keyboard.SimpleKeyBindingManager;
-import org.getspout.spout.keyboard.SimpleKeyboardManager;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.player.*;
 import org.getspout.spout.sound.SimpleSoundManager;
@@ -50,11 +48,9 @@ public class Spout extends JavaPlugin {
     public Spout() {
         super();
         Spout.instance = this;
-        SpoutManager.getInstance().setKeyboardManager(new SimpleKeyboardManager());
         SpoutManager.getInstance().setAppearanceManager(new SimpleAppearanceManager());
         SpoutManager.getInstance().setSoundManager(new SimpleSoundManager());
         SpoutManager.getInstance().setSkyManager(new SimpleSkyManager());
-        SpoutManager.getInstance().setInventoryBuilder(new SpoutInventoryBuilder());
         SpoutManager.getInstance().setPlayerManager(new SimplePlayerManager());
         SpoutManager.getInstance().setChunkDataManager(new SimpleChunkDataManager());
         SpoutManager.getInstance().setBiomeManager(new SimpleBiomeManager());
