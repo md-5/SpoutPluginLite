@@ -40,7 +40,6 @@ public class Spout extends JavaPlugin {
     protected SpoutWorldMonitorListener chunkMonitorListener;
     protected SpoutEntityListener entityListener;
     protected PluginListener pluginListener;
-    protected SpoutCustomBlockMonitor blockMonitor;
     protected static Spout instance;
     protected FlatFileStore<String> CRCConfig;
     protected FlatFileStore<Integer> itemMapConfig;
@@ -162,7 +161,6 @@ public class Spout extends JavaPlugin {
             chunkMonitorListener = new SpoutWorldMonitorListener(this);
             pluginListener = new PluginListener(this);
             entityListener = new SpoutEntityListener(this);
-            blockMonitor = new SpoutCustomBlockMonitor(this);
 
             for (SpoutPlayer player : org.getspout.spoutapi.Spout.getServer().getOnlinePlayers()) {
                 SpoutCraftPlayer.resetNetServerHandler(player);

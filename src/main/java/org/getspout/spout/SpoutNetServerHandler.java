@@ -4,13 +4,10 @@ import java.lang.reflect.Field;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.server.*;
-import org.bukkit.ChatColor;
 import org.getspout.spout.packet.listener.PacketListeners;
 import org.getspout.spout.packet.standard.MCCraftPacket;
 import org.getspout.spout.player.SpoutCraftPlayer;
 import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.Label;
-import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class SpoutNetServerHandler extends NetServerHandler {

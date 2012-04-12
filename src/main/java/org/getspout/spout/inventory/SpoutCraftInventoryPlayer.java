@@ -1,76 +1,61 @@
-/*
- * This file is part of SpoutPlugin (http://www.spout.org/).
- *
- * SpoutPlugin is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SpoutPlugin is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package org.getspout.spout.inventory;
 
 import net.minecraft.server.IInventory;
 import net.minecraft.server.PlayerInventory;
-
 import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.inventory.SpoutPlayerInventory;
 
 public class SpoutCraftInventoryPlayer extends CraftInventoryPlayer implements SpoutPlayerInventory {
-	protected SpoutCraftingInventory crafting;
-	protected String name = null;
-	public SpoutCraftInventoryPlayer(PlayerInventory inventory, SpoutCraftingInventory crafting) {
-		super(inventory);
-		this.crafting = crafting;
-	}
 
-	public PlayerInventory getHandle() {
-		return (PlayerInventory)this.inventory;
-	}
+    protected SpoutCraftingInventory crafting;
+    protected String name = null;
 
-	public IInventory getMatrixHandle() {
-		return this.crafting.getInventory();
-	}
+    public SpoutCraftInventoryPlayer(PlayerInventory inventory, SpoutCraftingInventory crafting) {
+        super(inventory);
+        this.crafting = crafting;
+    }
 
-	public IInventory getResultHandle() {
-		return this.crafting.getResultHandle();
-	}
+    public PlayerInventory getHandle() {
+        return (PlayerInventory) this.inventory;
+    }
 
-	public ItemStack getResult() {
-		return crafting.getResult();
-	}
+    public IInventory getMatrixHandle() {
+        return this.crafting.getInventory();
+    }
 
-	public ItemStack[] getMatrix() {
-		return crafting.getMatrix();
-	}
+    public IInventory getResultHandle() {
+        return this.crafting.getResultHandle();
+    }
 
-	public void setResult(ItemStack newResult) {
-		crafting.setResult(newResult);
-	}
+    public ItemStack getResult() {
+        return crafting.getResult();
+    }
 
-	public void setMatrix(ItemStack[] contents) {
-		crafting.setMatrix(contents);
-	}
+    public ItemStack[] getMatrix() {
+        return crafting.getMatrix();
+    }
 
-	public String getName() {
-		if (name == null) {
-			return this.inventory.getName();
-		}
-		return name;
-	}
+    public void setResult(ItemStack newResult) {
+        crafting.setResult(newResult);
+    }
 
-	public void setName(String title) {
-		this.name = title;
-	}
+    public void setMatrix(ItemStack[] contents) {
+        crafting.setMatrix(contents);
+    }
 
-	public int getItemInHandSlot() {
-		return this.getHandle().itemInHandIndex;
-	}
+    public String getName() {
+        if (name == null) {
+            return this.inventory.getName();
+        }
+        return name;
+    }
+
+    public void setName(String title) {
+        this.name = title;
+    }
+
+    public int getItemInHandSlot() {
+        return this.getHandle().itemInHandIndex;
+    }
 }
