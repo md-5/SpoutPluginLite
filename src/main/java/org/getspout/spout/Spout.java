@@ -22,7 +22,6 @@ import org.getspout.spout.inventory.SpoutInventoryBuilder;
 import org.getspout.spout.keyboard.SimpleKeyBindingManager;
 import org.getspout.spout.keyboard.SimpleKeyboardManager;
 import org.getspout.spout.packet.CustomPacket;
-import org.getspout.spout.packet.SimplePacketManager;
 import org.getspout.spout.player.*;
 import org.getspout.spout.sound.SimpleSoundManager;
 import org.getspout.spout.util.DeadlockMonitor;
@@ -56,7 +55,6 @@ public class Spout extends JavaPlugin {
         SpoutManager.getInstance().setSoundManager(new SimpleSoundManager());
         SpoutManager.getInstance().setSkyManager(new SimpleSkyManager());
         SpoutManager.getInstance().setInventoryBuilder(new SpoutInventoryBuilder());
-        SpoutManager.getInstance().setPacketManager(new SimplePacketManager());
         SpoutManager.getInstance().setPlayerManager(new SimplePlayerManager());
         SpoutManager.getInstance().setChunkDataManager(new SimpleChunkDataManager());
         SpoutManager.getInstance().setBiomeManager(new SimpleBiomeManager());
@@ -249,7 +247,7 @@ public class Spout extends JavaPlugin {
         if (ConfigReader.authenticateSpoutcraft()) {
             Packet18ArmAnimation packet = new Packet18ArmAnimation();
             packet.a = -42;
-            ((SpoutCraftPlayer) SpoutCraftPlayer.getPlayer(player)).getNetServerHandler().sendImmediatePacket(packet);
+            ((SpoutCraftPlayer) SpoutCraftPlayer.getPlayer(player)).getNetServerHandler().networkManager.queue(packet);
         }
     }
 

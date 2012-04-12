@@ -30,7 +30,6 @@ import org.getspout.spout.SpoutPermissibleBase;
 import org.getspout.spout.inventory.SpoutCraftInventoryPlayer;
 import org.getspout.spout.inventory.SpoutCraftingInventory;
 import org.getspout.spout.packet.CustomPacket;
-import org.getspout.spout.packet.standard.MCCraftPacket;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.permission.PlayerPermissionEvent;
 import org.getspout.spoutapi.gui.*;
@@ -785,28 +784,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
     }
 
     @Override
-    public void sendPacket(MCPacket packet) {
-        if (!(packet instanceof MCCraftPacket)) {
-            throw new IllegalArgumentException("Packet not of type MCCraftPacket");
-        }
-        MCCraftPacket p = (MCCraftPacket) packet;
-        getHandle().netServerHandler.sendPacket(p.getPacket());
-    }
-
-    @Override
-    public void sendImmediatePacket(MCPacket packet) {
-        if (!(packet instanceof MCCraftPacket)) {
-            throw new IllegalArgumentException("Packet not of type MCCraftPacket");
-        }
-        MCCraftPacket p = (MCCraftPacket) packet;
-        if (getHandle().netServerHandler instanceof SpoutNetServerHandler) {
-            getNetServerHandler().sendImmediatePacket(p.getPacket());
-        } else {
-            sendPacket(packet);
-        }
-    }
-
-    @Override
     public void checkUrl(String url) {
         if (url == null || url.length() < 5) {
             throw new UnsupportedOperationException("Invalid URL");
@@ -1121,9 +1098,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
             prevMode = getGameMode();
             mainScreen.toggleSurvivalHUD(!getGameMode().equals(GameMode.CREATIVE));
         }
-
-        //Do this last!
-        getNetServerHandler().syncFlushPacketQueue();
     }
 
     public void doPostPlayerChangeWorld(World oldWorld, World newWorld) {
@@ -1312,5 +1286,15 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void sendPacket(MCPacket packet) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void sendImmediatePacket(MCPacket packet) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
