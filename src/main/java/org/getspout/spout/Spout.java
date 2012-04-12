@@ -20,9 +20,6 @@ import org.getspout.spout.chunkcache.SimpleCacheManager;
 import org.getspout.spout.command.SpoutCommand;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.inventory.SpoutInventoryBuilder;
-import org.getspout.spout.item.mcitem.CustomItemFlint;
-import org.getspout.spout.item.mcitem.CustomItemPickaxe;
-import org.getspout.spout.item.mcitem.CustomItemSpade;
 import org.getspout.spout.keyboard.SimpleKeyBindingManager;
 import org.getspout.spout.keyboard.SimpleKeyboardManager;
 import org.getspout.spout.packet.CustomPacket;
@@ -183,10 +180,6 @@ public class Spout extends JavaPlugin {
             }
 
             ((SimplePlayerManager) SpoutManager.getPlayerManager()).onPluginEnable();
-
-            CustomItemSpade.replaceSpades();
-            CustomItemPickaxe.replacePickaxes();
-            CustomItemFlint.replaceFlint();
 
             PacketCompressionThread.startThread();
 
