@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spout.chunkcache.ChunkCache;
 import org.getspout.spout.player.SimplePlayerManager;
 import org.getspout.spout.player.SpoutCraftPlayer;
 import org.getspout.spoutapi.SpoutManager;
@@ -148,7 +147,6 @@ public class SpoutPlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         int id = player.getEntityId();
-        ChunkCache.playerQuit(id);
         Spout.getInstance().getPlayerTrackingManager().onPlayerQuit(player);
         synchronized (Spout.getInstance().playersOnline) {
             Spout.getInstance().playersOnline.remove((SpoutPlayer) player);

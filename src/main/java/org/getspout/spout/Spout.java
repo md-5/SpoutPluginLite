@@ -16,7 +16,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.getspout.commons.inventory.ItemMap;
 import org.getspout.commons.io.CRCStore;
 import org.getspout.commons.io.store.FlatFileStore;
-import org.getspout.spout.chunkcache.SimpleCacheManager;
 import org.getspout.spout.command.SpoutCommand;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.inventory.SpoutInventoryBuilder;
@@ -60,7 +59,6 @@ public class Spout extends JavaPlugin {
         SpoutManager.getInstance().setInventoryBuilder(new SpoutInventoryBuilder());
         SpoutManager.getInstance().setPacketManager(new SimplePacketManager());
         SpoutManager.getInstance().setPlayerManager(new SimplePlayerManager());
-        SpoutManager.getInstance().setCacheManager(new SimpleCacheManager());
         SpoutManager.getInstance().setChunkDataManager(new SimpleChunkDataManager());
         SpoutManager.getInstance().setBiomeManager(new SimpleBiomeManager());
         SpoutManager.getInstance().setFileManager(new SimpleFileManager());
