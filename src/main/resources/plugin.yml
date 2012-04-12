@@ -1,0 +1,16 @@
+name: ${project.name}
+version: ${build.number}
+description: ${project.description}
+author: md_5
+website: ${project.url}
+
+main: org.getspout.spout.Spout
+load: startup
+
+commands:
+  spout:
+    aliases: [spoutcommand, spoutcmd, spcmd]
+    description: Spout commands
+    usage: |
+            Usage: /<command> version [player]
+            Usage: /<command> verify [motd]

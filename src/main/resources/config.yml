@@ -1,0 +1,16 @@
+ForceMinecraftVersionCheck: true
+ForceSinglePlayerClient: false
+ForceSinglePlayerClientKickMessage: This server requires Spoutcraft! http://www.spout.org
+AuthenticateSpoutcraft: true
+AuthenticateTicks: 200
+ChunkDataCache: true
+DeadlockMonitor: false
+TeleportSmoothing: true
+AllowEntityLabelCheat: false
+AllowClearWaterCheat: false
+AllowCoordsCheat: false
+AllowSkyCheat: false
+AllowStarsCheat: false
+AllowTimeCheat: false
+AllowVoidFogCheat: false
+AllowWeatherCheat: false
