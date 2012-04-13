@@ -25,7 +25,6 @@ import org.getspout.commons.io.CRCStoreRunnable;
 import org.getspout.spout.PacketCompressionThread;
 import org.getspout.spout.Spout;
 import org.getspout.spout.SpoutNetServerHandler;
-import org.getspout.spout.SpoutPermissibleBase;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.permission.PlayerPermissionEvent;
@@ -85,14 +84,14 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
         super(server, entity);
         if (entity.netServerHandler != null) {
             CraftPlayer player = entity.netServerHandler.getPlayer();
-            perm = new SpoutPermissibleBase(player.addAttachment(Bukkit.getServer().getPluginManager().getPlugin("Spout")).getPermissible());
+            perm = new PermissibleBase(player.addAttachment(Bukkit.getServer().getPluginManager().getPlugin("Spout")).getPermissible());
             perm.recalculatePermissions();
 
             hasPlayed = player.hasPlayedBefore();
             lastPlayed = player.getLastPlayed();
             firstPlayed = player.getFirstPlayed();
         } else {
-            perm = new SpoutPermissibleBase(new PermissibleBase(this));
+            perm = new PermissibleBase(this);
             perm.recalculatePermissions();
         }
         mainScreen = new InGameScreen(this.getEntityId());
