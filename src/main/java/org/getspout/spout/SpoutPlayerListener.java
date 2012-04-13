@@ -2,18 +2,14 @@ package org.getspout.spout;
 
 import java.lang.reflect.Field;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
 import org.getspout.spout.player.SimplePlayerManager;
 import org.getspout.spout.player.SpoutCraftPlayer;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class SpoutPlayerListener implements Listener {
@@ -80,59 +76,6 @@ public class SpoutPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        if (!(event.getPlayer() instanceof SpoutPlayer)) {
-            updatePlayerEvent(event);
-        }
-        if (event.isCancelled()) {
-            return;
-        }
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
-
-        SpoutCraftPlayer player = (SpoutCraftPlayer) SpoutCraftPlayer.getPlayer(event.getPlayer());
-
-        if (event.getClickedBlock() != null) {
-            boolean action = false;
-
-            switch (event.getClickedBlock().getType()) {
-                case BREWING_STAND:
-                case CHEST:
-                case DISPENSER:
-                case ENCHANTMENT_TABLE:
-                case FURNACE:
-                case WORKBENCH:
-                case BED_BLOCK:
-                case CAKE_BLOCK:
-                case CAULDRON:
-                case DIODE_BLOCK_OFF:
-                case DIODE_BLOCK_ON:
-                case FENCE_GATE:
-                case IRON_DOOR_BLOCK:
-                case LEVER:
-                case NOTE_BLOCK:
-                case STONE_BUTTON:
-                case TRAP_DOOR:
-                case WOODEN_DOOR:
-                    action = true;
-                    break;
-            }
-
-            if (event.hasItem() && !action) {
-                SpoutBlock block = (SpoutBlock) event.getClickedBlock().getRelative(event.getBlockFace());
-
-                if (event.getClickedBlock().getType() == Material.SNOW) {
-                    block = block.getRelative(0, -1, 0);
-                }
-
-                ItemStack item = event.getItem();
-                int damage = item.getDurability();
-            }
-        }
-    }
-
     private void updatePlayerEvent(PlayerEvent event) {
         try {
             Field player = PlayerEvent.class.getDeclaredField("player");
@@ -146,7 +89,6 @@ public class SpoutPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        int id = player.getEntityId();
         Spout.getInstance().getPlayerTrackingManager().onPlayerQuit(player);
         synchronized (Spout.getInstance().playersOnline) {
             Spout.getInstance().playersOnline.remove((SpoutPlayer) player);

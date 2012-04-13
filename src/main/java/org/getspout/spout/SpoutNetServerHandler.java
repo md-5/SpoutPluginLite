@@ -7,18 +7,8 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class SpoutNetServerHandler extends NetServerHandler {
 
-    protected Field entityListField = null;
-    protected ItemStack lastOverrideDisplayStack = null;
-
     public SpoutNetServerHandler(MinecraftServer minecraftserver, NetworkManager networkmanager, EntityPlayer entityplayer) {
         super(minecraftserver, networkmanager, entityplayer);
-        //cache the field for later use
-        try {
-            entityListField = NetServerHandler.class.getDeclaredField("s");
-            entityListField.setAccessible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         //Lower the active packet queue size in bytes by 9 megabytes, to allow for 10mb of data in a players queue
         try {
@@ -29,17 +19,6 @@ public class SpoutNetServerHandler extends NetServerHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public IntHashMap getEntityList() {
-        try {
-            return (IntHashMap) entityListField.get(this);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override

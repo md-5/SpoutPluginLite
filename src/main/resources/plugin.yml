@@ -1,4 +1,4 @@
-name: ${project.name}
+name: Spout
 version: ${build.number}
 description: ${project.description}
 author: md_5

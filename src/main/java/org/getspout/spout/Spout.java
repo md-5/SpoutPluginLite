@@ -25,8 +25,6 @@ public class Spout extends JavaPlugin {
 
     public SpoutPlayerListener playerListener;
     protected final PlayerTrackingManager playerTrackingManager;
-    protected SpoutWorldListener chunkListener;
-    protected SpoutWorldMonitorListener chunkMonitorListener;
     protected SpoutEntityListener entityListener;
     protected PluginListener pluginListener;
     protected static Spout instance;
@@ -36,13 +34,11 @@ public class Spout extends JavaPlugin {
     private boolean hardDisable = false;
 
     public Spout() {
-        super();
         Spout.instance = this;
         SpoutManager.getInstance().setAppearanceManager(new SimpleAppearanceManager());
         SpoutManager.getInstance().setSoundManager(new SimpleSoundManager());
         SpoutManager.getInstance().setSkyManager(new SimpleSkyManager());
         SpoutManager.getInstance().setPlayerManager(new SimplePlayerManager());
-        SpoutManager.getInstance().setChunkDataManager(new SimpleChunkDataManager());
         SpoutManager.getInstance().setBiomeManager(new SimpleBiomeManager());
         SpoutManager.getInstance().setFileManager(new SimpleFileManager());
         SpoutManager.getInstance().setKeyBindingManager(new SimpleKeyBindingManager());
@@ -99,8 +95,6 @@ public class Spout extends JavaPlugin {
 
         if (!hardDisable) {
             playerListener = new SpoutPlayerListener(this);
-            chunkListener = new SpoutWorldListener(this);
-            chunkMonitorListener = new SpoutWorldMonitorListener(this);
             pluginListener = new PluginListener(this);
             entityListener = new SpoutEntityListener(this);
 
@@ -128,10 +122,6 @@ public class Spout extends JavaPlugin {
             //Can not remove them on disable because the packets will still be in the send queue
             CustomPacket.removeClassMapping();
             CustomPacket.addClassMapping();
-
-            SimpleChunkDataManager dm = (SimpleChunkDataManager) SpoutManager.getChunkDataManager();
-            dm.loadAllChunks();
-
         }
         setupPermissions();
     }
@@ -171,16 +161,6 @@ public class Spout extends JavaPlugin {
             packet.a = -42;
             ((SpoutCraftPlayer) SpoutCraftPlayer.getPlayer(player)).getNetServerHandler().networkManager.queue(packet);
         }
-    }
-
-    public void warnMessage(String minecraftVersion, String bukkitVersion) {
-        Bukkit.getServer().getLogger().info(
-                "\n-----------------------------------------------------\n"
-                + "|| SpoutPlugin is not working correctly due to version mismatch.\n"
-                + "|| Expected Minecraft Server version: " + minecraftVersion + "\n"
-                + "|| Current Minecraft Server version: " + bukkitVersion + "\n"
-                + "|| Either disable ForceMinecraftVersionCheck in /plugins/Spout/config.yml or update CraftBukkit.\n"
-                + "-------------------------------------------------------");
     }
 }
 
