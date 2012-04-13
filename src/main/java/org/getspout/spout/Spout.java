@@ -82,9 +82,6 @@ public class Spout extends JavaPlugin {
 
         SimpleFileManager.clearTempDirectory();
 
-        //end the thread
-        PacketCompressionThread.endThread();
-
         Runtime.getRuntime().removeShutdownHook(shutdownThread);
         super.onDisable();
     }
@@ -112,8 +109,6 @@ public class Spout extends JavaPlugin {
             }
 
             ((SimplePlayerManager) SpoutManager.getPlayerManager()).onPluginEnable();
-
-            PacketCompressionThread.startThread();
 
             //Start counting ticks
             Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new ServerTickTask(), 0, 1);

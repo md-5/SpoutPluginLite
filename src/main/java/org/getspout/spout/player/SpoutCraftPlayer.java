@@ -22,7 +22,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import org.getspout.commons.io.CRCStore.URLCheck;
 import org.getspout.commons.io.CRCStoreRunnable;
-import org.getspout.spout.PacketCompressionThread;
 import org.getspout.spout.Spout;
 import org.getspout.spout.SpoutNetServerHandler;
 import org.getspout.spout.packet.CustomPacket;
@@ -716,14 +715,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
                 queued.add(packet);
             }
         } else {
-            if (packet instanceof CompressablePacket) {
-                CompressablePacket compressable = ((CompressablePacket) packet);
-                //uncompressed, send it to the compression thread
-                if (!compressable.isCompressed()) {
-                    PacketCompressionThread.add(compressable, this);
-                    return;
-                }
-            }
             getNetServerHandler().sendPacket(new CustomPacket(packet));
         }
     }
