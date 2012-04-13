@@ -76,10 +76,6 @@ public class Spout extends JavaPlugin {
 
         getServer().getScheduler().cancelTasks(this);
 
-        SimpleChunkDataManager dm = (SimpleChunkDataManager) SpoutManager.getChunkDataManager();
-        dm.unloadAllChunks();
-        dm.closeAllFiles();
-
         SimpleFileManager.clearTempDirectory();
 
         Runtime.getRuntime().removeShutdownHook(shutdownThread);
