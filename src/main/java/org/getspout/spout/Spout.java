@@ -1,12 +1,9 @@
 package org.getspout.spout;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.server.Packet18ArmAnimation;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -98,42 +95,8 @@ public class Spout extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        (new ConfigReader()).read();
+        new ConfigReader().read();
 
-        //The infamous SpoutPlugin build check
-        if (ConfigReader.isBuildCheck()) {
-            InputStream is = getResource("plugin.yml");
-            final YamlConfiguration config = YamlConfiguration.loadConfiguration(is);
-
-            // Format the output from Bukkit.getVersion()
-            String output = "";
-            if (Bukkit.getServer().getVersion().contains("(MC: ")) {
-                String[] temp = Bukkit.getServer().getVersion().split("\\(MC: ");
-                output = temp[1].trim().substring(0, 5);
-            }
-
-            final String bukkitVersion = output;
-            final String minecraftVersion = config.getString("mcversion");
-
-            if (!minecraftVersion.equals(bukkitVersion)) {
-                warnMessage(minecraftVersion, bukkitVersion);
-                hardDisable = true;
-                Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
-
-                    @Override
-                    public void run() {
-                        warnMessage(minecraftVersion, bukkitVersion);
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            if (player.isOp()) {
-                                player.sendMessage("[" + ChatColor.BLUE + "Spout" + ChatColor.WHITE + "] " + ChatColor.RED + "SpoutPlugin is not working correctly, please check the console.");
-                            } else {
-                                //	player.sendMessage("[" + ChatColor.BLUE + "Spout" + ChatColor.WHITE + "] Dear " + player.getName() + ", please let your admin know to check the console.");
-                            }
-                        }
-                    }
-                }, 1200L, 1200L);
-            }
-        }
         if (!hardDisable) {
             playerListener = new SpoutPlayerListener(this);
             chunkListener = new SpoutWorldListener(this);
