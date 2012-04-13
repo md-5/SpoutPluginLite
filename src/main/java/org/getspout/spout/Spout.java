@@ -1,6 +1,5 @@
 package org.getspout.spout;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +13,11 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.getspout.commons.inventory.ItemMap;
-import org.getspout.commons.io.CRCStore;
-import org.getspout.commons.io.store.FlatFileStore;
-import org.getspout.spout.command.SpoutCommand;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.keyboard.SimpleKeyBindingManager;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.player.*;
 import org.getspout.spout.sound.SimpleSoundManager;
-import org.getspout.spout.util.DeadlockMonitor;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.chunkstore.PlayerTrackingManager;
 import org.getspout.spoutapi.chunkstore.SimpleChunkDataManager;
@@ -38,8 +33,6 @@ public class Spout extends JavaPlugin {
     protected SpoutEntityListener entityListener;
     protected PluginListener pluginListener;
     protected static Spout instance;
-    protected FlatFileStore<String> CRCConfig;
-    protected FlatFileStore<Integer> itemMapConfig;
     protected ItemMap serverItemMap;
     protected List<SpoutPlayer> playersOnline = new ArrayList<SpoutPlayer>();
     protected Thread shutdownThread = null;
@@ -93,14 +86,6 @@ public class Spout extends JavaPlugin {
         SimpleChunkDataManager dm = (SimpleChunkDataManager) SpoutManager.getChunkDataManager();
         dm.unloadAllChunks();
         dm.closeAllFiles();
-
-        CRCConfig.save();
-
-        if (itemMapConfig != null) {
-            synchronized (itemMapConfig) {
-                itemMapConfig.save();
-            }
-        }
 
         SimpleFileManager.clearTempDirectory();
 
@@ -185,29 +170,7 @@ public class Spout extends JavaPlugin {
             dm.loadAllChunks();
 
         }
-        //These are safe even if the build check fails
-        getCommand("spout").setExecutor(new SpoutCommand(this));
-
-        CRCConfig = new FlatFileStore<String>(new File(this.getDataFolder(), "CRCCache.txt"), String.class);
-        CRCConfig.load();
-
-        CRCStore.setConfigFile(CRCConfig);
-
-        itemMapConfig = new FlatFileStore<Integer>(new File(this.getDataFolder(), "itemMap.txt"), Integer.class);
-        if (!itemMapConfig.load()) {
-            System.out.println("[Spout] Unable to load global item map");
-        } else {
-            serverItemMap = new ItemMap(null, itemMapConfig, null);
-        }
-        ItemMap.setRootMap(serverItemMap);
-
-        if (ConfigReader.runDeadlockMonitor()) {
-            new DeadlockMonitor().start();
-        }
-
         setupPermissions();
-
-        super.onEnable();
     }
 
     /**

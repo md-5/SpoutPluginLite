@@ -12,7 +12,6 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerVelocityEvent;
@@ -88,7 +87,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
 
     public SpoutCraftPlayer(CraftServer server, EntityPlayer entity) {
         super(server, entity);
-        createInventory(null);
         if (entity.netServerHandler != null) {
             CraftPlayer player = entity.netServerHandler.getPlayer();
             perm = new SpoutPermissibleBase(player.addAttachment(Bukkit.getServer().getPluginManager().getPlugin("Spout")).getPermissible());
@@ -258,44 +256,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
             velocityAdjustmentTime = System.currentTimeMillis() + (long) (speed * 5);
             getHandle().velocityChanged = false; //prevents nms from sending an override packet later, but still tells the server about the new velocity
         }
-    }
-
-    /*
-     * Inteface New Public Methods
-     */
-    @Override
-    public boolean closeActiveWindow() {
-        this.closeInventory();
-        return true;
-    }
-
-    @Override
-    public boolean openInventoryWindow(Inventory inventory) {
-        return openInventoryWindow(inventory, null, false);
-    }
-
-    @Override
-    public boolean openInventoryWindow(Inventory inventory, Location location) {
-        return openInventoryWindow(inventory, location, false);
-    }
-
-    @Override
-    public boolean openInventoryWindow(Inventory inventory, Location location, boolean ignoreDistance) {
-        IInventory dialog = ((CraftInventory) inventory).getInventory();
-        if (dialog instanceof TileEntityDispenser) {
-            getHandle().openContainer((TileEntityDispenser) dialog);
-        } else if (dialog instanceof TileEntityFurnace) {
-            getHandle().openContainer((TileEntityFurnace) dialog);
-        } else {
-            getHandle().openContainer(dialog);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean openWorkbenchWindow(Location location) {
-        this.openEnchanting(location, true);
-        return true;
     }
 
     @Override
@@ -1295,6 +1255,31 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
 
     @Override
     public void sendImmediatePacket(MCPacket packet) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean closeActiveWindow() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean openInventoryWindow(Inventory inventory) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean openInventoryWindow(Inventory inventory, Location location) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean openInventoryWindow(Inventory inventory, Location location, boolean ignoreDistance) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean openWorkbenchWindow(Location location) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
