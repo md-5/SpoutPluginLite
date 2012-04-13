@@ -6,7 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class PluginListener implements Listener {
 
@@ -16,10 +15,8 @@ public class PluginListener implements Listener {
 
     @EventHandler
     public void onPluginDisable(PluginDisableEvent event) {
-        SpoutManager.getKeyboardManager().removeAllKeyBindings(event.getPlugin());
         for (Player i : Bukkit.getServer().getOnlinePlayers()) {
-            SpoutPlayer p = SpoutManager.getPlayer(i);
-            p.getMainScreen().removeWidgets(event.getPlugin());
+            SpoutManager.getPlayer(i).getMainScreen().removeWidgets(event.getPlugin());
         }
     }
 }

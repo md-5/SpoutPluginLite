@@ -41,21 +41,6 @@ public class SpoutPlayerListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPlayerKick(PlayerKickEvent event) {
-        if (event.getPlayer() instanceof SpoutCraftPlayer) {
-            SpoutCraftPlayer player = (SpoutCraftPlayer) event.getPlayer();
-            if (event.getReason().equals("You moved too quickly :( (Hacking?)")) {
-                if (player.canFly()) {
-                    event.setCancelled(true);
-                }
-                if (System.currentTimeMillis() < player.velocityAdjustmentTime) {
-                    event.setCancelled(true);
-                }
-            }
-        }
-    }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerTeleport(final PlayerTeleportEvent event) {
         if (!(event.getPlayer() instanceof SpoutPlayer)) {

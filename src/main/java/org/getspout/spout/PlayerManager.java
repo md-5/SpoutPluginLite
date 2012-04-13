@@ -16,13 +16,11 @@ import org.getspout.spoutapi.event.spout.SpoutcraftFailedEvent;
 import org.getspout.spoutapi.material.CustomBlock;
 import org.getspout.spoutapi.material.MaterialData;
 import org.getspout.spoutapi.packet.*;
-import org.getspout.spoutapi.player.PlayerInformation;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class PlayerManager {
 
     private HashMap<String, Integer> timer = new HashMap<String, Integer>();
-    HashMap<String, PlayerInformation> infoMap = new HashMap<String, PlayerInformation>();
 
     public void onPlayerJoin(Player player) {
         timer.put(player.getName(), ConfigReader.getAuthenticateTicks());
