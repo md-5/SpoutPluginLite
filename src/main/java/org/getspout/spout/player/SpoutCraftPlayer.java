@@ -26,13 +26,10 @@ import org.getspout.spout.PacketCompressionThread;
 import org.getspout.spout.Spout;
 import org.getspout.spout.SpoutNetServerHandler;
 import org.getspout.spout.SpoutPermissibleBase;
-import org.getspout.spout.inventory.SpoutCraftInventoryPlayer;
-import org.getspout.spout.inventory.SpoutCraftingInventory;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.permission.PlayerPermissionEvent;
 import org.getspout.spoutapi.gui.*;
-import org.getspout.spoutapi.inventory.SpoutPlayerInventory;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.packet.*;
 import org.getspout.spoutapi.packet.standard.MCPacket;
@@ -43,7 +40,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
 
-    protected SpoutCraftInventoryPlayer inventory = null;
     protected Keyboard forward = Keyboard.KEY_UNKNOWN;
     protected Keyboard back = Keyboard.KEY_UNKNOWN;
     protected Keyboard left = Keyboard.KEY_UNKNOWN;
@@ -205,16 +201,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
     @Override
     public Set<PermissionAttachmentInfo> getEffectivePermissions() {
         return perm.getEffectivePermissions();
-    }
-
-    @Override
-    public SpoutPlayerInventory getInventory() {
-        if (this.inventory == null) {
-            createInventory(null);
-        } else if (!(this.inventory).getHandle().equals(this.getHandle().inventory)) {
-            createInventory(this.inventory.getName());
-        }
-        return this.inventory;
     }
 
     @Override
@@ -962,20 +948,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
 
     public void setLastClickedLocation(Location location) {
         lastClicked = location;
-    }
-
-    public void createInventory(String name) {
-        if (this.getHandle().activeContainer instanceof ContainerPlayer) {
-            this.inventory = new SpoutCraftInventoryPlayer(this.getHandle().inventory, new SpoutCraftingInventory(((ContainerPlayer) this.getHandle().activeContainer).craftInventory, ((ContainerPlayer) this.getHandle().activeContainer).resultInventory));
-            if (name != null) {
-                this.inventory.setName(name);
-            }
-        } else {
-            this.inventory = new SpoutCraftInventoryPlayer(this.getHandle().inventory, new SpoutCraftingInventory(((ContainerPlayer) this.getHandle().defaultContainer).craftInventory, ((ContainerPlayer) this.getHandle().defaultContainer).resultInventory));
-            if (name != null) {
-                this.inventory.setName(name);
-            }
-        }
     }
 
     public int getActiveWindowId() {
