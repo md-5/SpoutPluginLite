@@ -35,7 +35,6 @@ public class Spout extends JavaPlugin {
 
     public Spout() {
         Spout.instance = this;
-        SpoutManager.getInstance().setAppearanceManager(new SimpleAppearanceManager());
         SpoutManager.getInstance().setSoundManager(new SimpleSoundManager());
         SpoutManager.getInstance().setSkyManager(new SimpleSkyManager());
         SpoutManager.getInstance().setPlayerManager(new SimplePlayerManager());

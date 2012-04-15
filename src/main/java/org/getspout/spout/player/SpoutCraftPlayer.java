@@ -1,7 +1,6 @@
 package org.getspout.spout.player;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 import net.minecraft.server.*;
 import org.bukkit.*;
@@ -73,9 +72,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
     public LinkedList<SpoutPacket> queued = new LinkedList<SpoutPacket>();
     private LinkedList<SpoutPacket> delayedPackets = new LinkedList<SpoutPacket>();
     public long velocityAdjustmentTime = System.currentTimeMillis();
-    private long firstPlayed = 0;
-    private long lastPlayed = 0;
-    private boolean hasPlayed = false;
     private GameMode prevMode;
     private Map<String, String> addons;
 
@@ -85,10 +81,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
             CraftPlayer player = entity.netServerHandler.getPlayer();
             perm = new PermissibleBase(player.addAttachment(Bukkit.getServer().getPluginManager().getPlugin("Spout")).getPermissible());
             perm.recalculatePermissions();
-
-            hasPlayed = player.hasPlayedBefore();
-            lastPlayed = player.getLastPlayed();
-            firstPlayed = player.getFirstPlayed();
         } else {
             perm = new PermissibleBase(this);
             perm.recalculatePermissions();
@@ -100,42 +92,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
         fly = ((CraftServer) Bukkit.getServer()).getHandle().server.allowFlight;
     }
 
-    @Override
-    public boolean hasPlayedBefore() {
-        return hasPlayed;
-    }
-
-    @Override
-    public long getFirstPlayed() {
-        return firstPlayed;
-    }
-
-    @Override
-    public long getLastPlayed() {
-        return lastPlayed;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof CraftPlayer)) {
-            return false;
-        }
-        final CraftPlayer other = (CraftPlayer) obj;
-        if ((this.getName() == null) ? (other.getName() != null) : !this.getName().equals(other.getName())) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + (this.getName() != null ? this.getName().hashCode() : 0);
-        return hash;
-    }
 
     /*
      * Interace Overriden Public Methods
@@ -940,29 +896,6 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
         lastClicked = location;
     }
 
-    public int getActiveWindowId() {
-        Field id;
-        try {
-            id = EntityPlayer.class.getDeclaredField("bX");
-            id.setAccessible(true);
-            return (Integer) id.get(getHandle());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    public void updateWindowId() {
-        Method id;
-        try {
-            id = EntityPlayer.class.getDeclaredMethod("aq");
-            id.setAccessible(true);
-            id.invoke(getHandle());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public SpoutNetServerHandler getNetServerHandler() {
         if (!(getHandle().netServerHandler instanceof SpoutNetServerHandler)) {
             updateNetServerHandler(this);
@@ -1121,7 +1054,7 @@ public class SpoutCraftPlayer extends CraftPlayer implements SpoutPlayer {
             bukkitEntity = Entity.class.getDeclaredField("bukkitEntity");
             bukkitEntity.setAccessible(true);
             org.bukkit.entity.Entity e = (org.bukkit.entity.Entity) bukkitEntity.get(ep);
-            if (e == null || !e.getClass().equals(SpoutCraftPlayer.class)) {
+            if (e != null && !(e instanceof SpoutCraftPlayer)) {
                 bukkitEntity.set(ep, new SpoutCraftPlayer((CraftServer) Bukkit.getServer(), ep));
             }
             return true;
